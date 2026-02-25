@@ -1,0 +1,79 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>CSV Reconciler — transaction reconciliation</title>
+    <meta name="description" content="Reconcile CSV files in the browser by transaction id, amount, and status." />
+    <link rel="stylesheet" href="./styles.css" />
+    <script defer src="https://cdn.jsdelivr.net/npm/papaparse@5.4.1/papaparse.min.js"></script>
+    <script defer src="./app.js"></script>
+  </head>
+  <body>
+    <div class="container">
+      <header class="header">
+        <div>
+          <div class="title">CSV Reconciler</div>
+          <div class="subtitle">Reconcile transactions in the browser (files never leave your device)</div>
+        </div>
+        <div class="pill">GitHub Pages-friendly</div>
+      </header>
+
+      <section class="card">
+        <h2>Settings</h2>
+        <div class="grid grid-3">
+          <label class="field">
+            <div class="label">Decimal places (amount_scale)</div>
+            <input id="amountScale" type="number" min="0" max="18" value="2" />
+          </label>
+          <label class="field">
+            <div class="label">Tolerance (amount_tolerance in smallest units)</div>
+            <input id="amountTolerance" type="number" min="0" step="1" value="0" />
+          </label>
+          <label class="field">
+            <div class="label">Row limit per report (0 = no limit)</div>
+            <input id="reportLimit" type="number" min="0" step="1000" value="0" />
+          </label>
+        </div>
+        <div class="hint">
+          Amounts are compared as integers: <code>amount_scaled = amount * 10^amount_scale</code>.
+        </div>
+      </section>
+
+      <section class="card">
+        <div class="row row-between row-wrap gap">
+          <div>
+            <h2>Files</h2>
+            <div class="hint">Upload a primary CSV and one or more CSVs to compare against.</div>
+          </div>
+          <div class="row gap">
+            <button id="addFileBtn" class="btn btn-secondary" type="button">Add file</button>
+            <button id="runBtn" class="btn btn-primary" type="button">Run reconciliation</button>
+          </div>
+        </div>
+
+        <div id="files"></div>
+      </section>
+
+      <section class="card">
+        <h2>Progress</h2>
+        <div id="progress" class="mono">Waiting…</div>
+        <div class="bar">
+          <div id="progressBar" class="bar-fill" style="width: 0%"></div>
+        </div>
+      </section>
+
+      <section class="card">
+        <h2>Results</h2>
+        <div id="results" class="results">No results yet.</div>
+      </section>
+
+      <footer class="footer">
+        <div class="muted">
+          Files are processed locally in your browser. Very large CSV files may require a lot of memory.
+        </div>
+      </footer>
+    </div>
+  </body>
+</html>
+
